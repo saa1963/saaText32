@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <regex>
 #include "saacutils.h"
 #include "CSpooler.h"
 #include "SaaPrint.h"
@@ -116,6 +117,8 @@ void CDtxView::Show(char* fname)
 std::string CDtxView::readFile(const std::string& fileName) {
 	std::ifstream t(fileName, ifstream::binary);
 	std::string str;
+	std::string empty("");
+	std::regex rx("`(.*)`");
 
 	t.seekg(0, std::ios::end);
 	str.reserve(t.tellg());
@@ -123,7 +126,7 @@ std::string CDtxView::readFile(const std::string& fileName) {
 
 	str.assign((std::istreambuf_iterator<char>(t)),
 		std::istreambuf_iterator<char>());
-	return str;
+	return std::regex_replace(str, rx, empty);
 }
 
 bool CDtxView::writeFile(const std::string& fileName) {
