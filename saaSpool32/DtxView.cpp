@@ -215,7 +215,8 @@ BOOL CALLBACK DtxDialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lP
 			dtxview = (CDtxView*)GetWindowLong(hwndDlg, DWL_USER);
 			if (GetPrinterName(pName)) {
 				print = new CSaaPrint(pName);
-				print->PrintText(dtxview->text, false);
+				//print->PrintText(dtxview->text, false);
+				print->PrintText(GetEditText(GetDlgItem(hwndDlg, IDC_EDIT1)), false);
 				delete print;
 			}
 			return TRUE;
@@ -232,7 +233,7 @@ BOOL CALLBACK DtxDialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lP
 			return TRUE;
 		case IDI_MSWORD:
 			dtxview = (CDtxView*)GetWindowLong(hwndDlg, DWL_USER);
-			WordText(dtxview->text);
+			WordText(GetEditText(GetDlgItem(hwndDlg, IDC_EDIT1)));
 			return TRUE;
 		case IDI_QUIT:
 			EndDialog(hwndDlg, 0);
@@ -623,7 +624,8 @@ void FindFirst(HWND hwndDlg, string *find) {
 	CDtxView *dtxview = (CDtxView*)GetWindowLong(hwndDlg, DWL_USER);
 	basic_string<char>::size_type pos;
 	dtxview->findpos = 0;
-	pos = dtxview->text.find(*find, 0);
+	string text = GetEditText(GetDlgItem(hwndDlg, IDC_EDIT1));
+	pos = text.find(*find, 0);
 	if (pos != basic_string<char>::npos) {
 		// нашли !!!!!!
 		dtxview->findpos = pos;
@@ -636,7 +638,8 @@ void FindFirst(HWND hwndDlg, string *find) {
 void FindNext(HWND hwndDlg, string *find) {
 	CDtxView *dtxview = (CDtxView*)GetWindowLong(hwndDlg, DWL_USER);
 	basic_string<char>::size_type pos;
-	pos = dtxview->text.find(*find, dtxview->findpos + 1);
+	string text = GetEditText(GetDlgItem(hwndDlg, IDC_EDIT1));
+	pos = text.find(*find, dtxview->findpos + 1);
 	if (pos != basic_string<char>::npos) {
 		// нашли !!!!!!
 		dtxview->findpos = pos;
